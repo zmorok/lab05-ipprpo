@@ -79,4 +79,24 @@ class OrderServiceTest {
         assertEquals(1, repo.getAll().size());
         assertSame(order, repo.getById(order.id));
     }
+
+
+    @Test
+    void createOrder_RepositoryError() {
+        IRepository<Order> brokenRepository = new OrderRepository() {
+            @Override
+            public void add(Order order) {
+                throw new RuntimeException("Ошибка базы данных");
+            }
+        };
+
+        OrderService brokenService = new OrderService(brokenRepository, 300.0);
+        Customer customer = new Customer(1, "Иванов", "Иван", "Иванович", "123", 1000.0);
+        Dish dish = new Dish(1, "Стейк", new String[]{}, 500.0);
+
+        assertThrows(RuntimeException.class, () -> {
+            brokenService.createOrder(customer, List.of(dish));
+        });
+    }
+
 }
