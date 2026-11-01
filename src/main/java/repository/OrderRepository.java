@@ -65,7 +65,9 @@ public class OrderRepository implements IRepository<Order> {
     @Override
     public Order getById(int id) {
         for (Order order : orders) {
-            if (order.id == id) return order;
+            if (order.id == id) {
+                return order;
+            }
         }
         return null;
     }
