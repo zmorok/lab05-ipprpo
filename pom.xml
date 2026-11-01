@@ -4,7 +4,7 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>org.example</groupId>
-  <artifactId>lab04</artifactId>
+  <artifactId>lab05</artifactId>
   <version>1.0-SNAPSHOT</version>
 
   <properties>
@@ -29,6 +29,19 @@
         <artifactId>maven-surefire-plugin</artifactId>
         <version>3.5.4</version>
       </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-checkstyle-plugin</artifactId>
+        <version>3.6.0</version>
+
+        <configuration>
+          <configLocation>checkstyle.xml</configLocation>
+          <includeTestSourceDirectory>true</includeTestSourceDirectory>
+          <consoleOutput>true</consoleOutput>
+          <failOnViolation>true</failOnViolation>
+        </configuration>
+      </plugin>
     </plugins>
   </build>
 
@@ -39,7 +52,7 @@
         <build.mode>SPECIAL</build.mode>
       </properties>
       <build>
-        <finalName>lab04-special</finalName>
+        <finalName>lab05-special</finalName>
       </build>
     </profile>
   </profiles>
