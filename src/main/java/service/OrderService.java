@@ -7,7 +7,12 @@ import repository.IRepository;
 
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 public class OrderService {
+    private static final Logger logger = LoggerFactory.getLogger(OrderService.class);
+
     private final IRepository<Order> repository;
     private final double minOrderPrice;
 
@@ -36,6 +41,7 @@ public class OrderService {
         }
 
         if (customer.cash < orderPrice) {
+            logger.warn("Недостаточно средств у клиента {}. Баланс: {}, сумма заказа: {}", customer.id, customer.cash, orderPrice);
             throw new IllegalArgumentException(
                     String.format(
                             "Не хватает средств ({0}) для оплаты заказа на сумму {1}",
@@ -48,7 +54,15 @@ public class OrderService {
         int id = repository.getMaxId() + 1;
         Order order = new Order(id, customer.id, dishes);
 
-        repository.add(order);
+        try {
+            repository.add(order);
+        } catch (RuntimeException e) {
+            logger.error("Ошибка сохранения заказа клиента {}", customer.id, e);
+            throw e;
+        }
+
+        logger.info("Заказ №{} успешно оформлен. Клиент: {}, сумма: {}", order.id, customer.id, order.price);
+
         return order;
     }
 
