@@ -10,10 +10,22 @@ pipeline {
     }
 
     stages {
+        stage('Checkout') {
+            steps {
+                checkout scm
+            }
+        }
+
         stage('Build') {
             steps {
                 echo "Building banking system for: ${params.BANK_NAME}"
                 sh 'mvn compile'
+            }
+        }
+
+        stage('Static Analysis') {
+            steps {
+                sh 'mvn checkstyle:check'
             }
         }
 
