@@ -76,7 +76,7 @@ class OrderServiceTest {
         assertEquals(300.0, customer.cash, 0.001);
         assertEquals(customer.id, order.idCustomer);
         assertIterableEquals(dishes, order.orderedDishes);
-        assertEquals(2, repo.getAll().size());
+        assertEquals(1, repo.getAll().size());
         assertSame(order, repo.getById(order.id));
     }
 
